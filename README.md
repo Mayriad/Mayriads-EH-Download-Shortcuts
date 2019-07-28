@@ -1,5 +1,7 @@
 # Mayriad's EH Download Shortcuts
 
+[![Github Release Version](https://img.shields.io/github/release/Mayriad/Mayriads-EH-Download-Shortcuts)]() [![Github Release Date](https://img.shields.io/github/release-date/Mayriad/Mayriads-EH-Download-Shortcuts)]()
+
 A userscript for e-hentai galleries that automates the standard download process and lets you download galleries en masse directly from gallery lists via the three official methods, which include the doggie bag archiver, H@H downloader, and ehtracker torrents.
 
 ## Table of contents
