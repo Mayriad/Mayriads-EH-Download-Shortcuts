@@ -4,8 +4,8 @@
 // @version         1.5.1
 // @author          Mayriad
 // @description     Adds buttons to download galleries directly from the gallery list
-// @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/Mayriads-EH-Download-Shortcuts.user.js
-// @downloadURL     https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/Mayriads-EH-Download-Shortcuts.user.js
+// @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
+// @downloadURL     https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
 // @include         https://e-hentai.org/*
 // @include         https://ehtracker.org/*
 // @include         htt*://*/*downloadshortcuts=*
@@ -37,7 +37,7 @@ const HIDE_ERROR_MESSAGES = false;
 // Code that you should not change unless you know what you are doing --------------------------------------------------
 
 // Runs the list of top-level functions below when the DOM is ready.
-let onDOMLoad = function() {
+let onDomLoad = function() {
     addDownloadShortcuts();
     openGalleriesSeparately();
 };
@@ -590,8 +590,8 @@ if (window.location.href.includes('downloadshortcuts=')) {
     }
 } else {
     if (document.readyState === 'loading') {
-        window.addEventListener('DOMContentLoaded', onDOMLoad);
+        window.addEventListener('DOMContentLoaded', onDomLoad);
     } else {
-        onDOMLoad();
+        onDomLoad();
     }
 }
