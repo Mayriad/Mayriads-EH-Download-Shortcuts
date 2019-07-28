@@ -17,7 +17,7 @@ A userscript for e-hentai galleries that automates the standard download process
 
 ## TLDR
 
-This readme or user manual has 3460 words, so I think I should put this here:
+This readme or user manual has 3503 words, so I think I should put this here:
 
 Use a machine translator if you need / 必要に応じて機械翻訳を使用してください / 如果需要，请使用机器翻译 / 필요한 경우 기계 번역을 사용하십시오.
 
@@ -37,7 +37,7 @@ You need to [enable mixed contents](#mixed-content) to download archives. Read [
 
 This userscript is an extract from my private master script and only contains the download function and another function to prevent PEBKAC accidents. It adds shortcut buttons to let you download archives, torrents en masse directly from gallery lists on e-hentai.org via official methods. It can also use the H@H downloader if you qualify. It works on all gallery list pages on, which includes the search page and the favourites page. All gallery list display modes are supported.
 
-This is not a crawler and uses official methods that are not free except for the ehtracker torrents. You will need to have enough GP or credits to download archives, and you will only be entitled to use the H@H downloader if you are running a H@H client. The upside is that this may be the fastest option for mass downloads, and it is unlikely that you will get banned for using this script, unless you overuse the batch download feature.
+This is not a crawler and uses official methods that are not free except for the ehtracker torrents. You will need to have enough GP or credits to download archives, and you will only be entitled to use the H@H downloader if you are running a H@H client. The upside is that this may be the fastest option for mass downloads, and it is unlikely that you will get banned for using this script, unless you overuse the batch download feature. This script is also safer in that you do not need to submit your username and password to any application. I have confidence in the readability of my code, so you are welcome to check the code if you are unnecessarily worried.
 
 I was not planning to release this particular script, because I am nowhere close to a real programmer and a public project will be difficult for me to maintain. I thought at most I would release the whole master script sometime in the future when I have prepared everything, but then the crisis happened and I thought this would help, so I made a premature emergency release on the EH forums. Unfortunately the forum's autocorrect silently made unexpected edits to the code there, and basically wrecked it even though the edits were tiny. Furthermore, the emergency release had unusual edits made to disable all error messages to speed it up during the countdown, which may have confused some users.
 
