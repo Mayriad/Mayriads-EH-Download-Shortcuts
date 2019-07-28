@@ -15,9 +15,9 @@ A userscript for e-hentai galleries that automates the standard download process
 
 ## TLDR
 
-This readme or user manual has 3503 words, so I think I should put this here:
+This readme or user manual has 3000+ words, so I think I should put this here:
 
-Use a machine translator if you need / 必要に応じて機械翻訳を使用してください / 如果需要，请使用机器翻译 / 필요한 경우 기계 번역을 사용하십시오.
+Please use machine translation if you need / 必要に応じて機械翻訳を使ってください / 如果需要，请使用机器翻译 / 필요한 경우 기계 번역을 사용하십시오.
 
 This script lets you download archives, torrents en masse directly from e-hentai gallery lists via official methods. It can also use the H@H downloader if you qualify.
 
