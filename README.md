@@ -61,8 +61,6 @@ When the script successfully starts a actual download or found a gallery with a 
 
 If mixed content cannot be globally enabled for all page loads forever, you will need to manually enable it for each tab e.g., Chrome. In this case, the page may refresh after it is enabled and that will reset the download buttons and your temporary download records. Therefore, if you are downloading both archives and torrents, you should enable mixed content and trigger this page refresh first, by triggering an archive download on a gallery without torrent, before you actually start your organised download process.
 
-By the way, it is not possible to keep permanent download records, because this would not be safe. Because ratings probably apply to gallery chains like favourites, galleries that have been added to a permanent download record will not be automatically downloaded again after these galleries are updated, because the script will skip them. Therefore, you will miss all updated galleries.
-
 ### Script compatibility
 
 I cannot really confirm where it will work and where not yet. Because it is from my private master script and I was the only user, it has not been tested for compatibility until I put it up in an emergency release thread a few days ago. I can only recommend you to use the latest browsers and load it with Greasemonkey or Tampermonkey. It has been confirmed to work with other userscript loaders, but you will need Greasemonkey or Tampermonkey for my master script later when I release it to replace this script.
