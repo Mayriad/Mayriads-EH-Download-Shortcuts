@@ -29,11 +29,13 @@ There are settings in the code and their names are obvious enough to you to use 
 
 You need to [enable mixed contents](#mixed-content) to download archives. Read [the troubleshooting section](#troubleshooting) if you have problems, or make a post in [the official release thread](https://forums.e-hentai.org/index.php?showtopic=229481).
 
+You should be able to update this script directly from your userscript loader e.g., Tampermonkey, and you should do so to keep this script up to date.
+
 [⇧ Back to table of contents](#table-of-contents)
 
 ## About
 
-This userscript is an extract from my private master script and only contains the download function and another function to prevent PEBKAC accidents. It adds shortcut buttons to let you download archives, torrents en masse directly from gallery lists on e-hentai.org via official methods. It can also use the H@H downloader if you qualify. It works on all gallery list pages on, which includes the search page and the favourites page. All gallery list display modes are supported.
+This userscript is an extract from my private master script and only contains the download function and another function to prevent PEBKAC accidents. It adds shortcut buttons to let you download archives, torrents en masse directly from gallery lists on e-hentai.org via official methods. It can also use the H@H downloader if you qualify. It works on all gallery list pages, which includes the search page and the favourites page, and all gallery list display modes are supported. You should be able to update this script directly from your userscript loader e.g., Tampermonkey.
 
 This is not a crawler and uses official methods that are not free except for the ehtracker torrents. You will need to have enough GP or credits to download archives, and you will only be entitled to use the H@H downloader if you are running a H@H client. The upside is that this may be the fastest option for mass downloads, and it is unlikely that you will get banned for using this script, unless you overuse the batch download feature. This script is also safer in that you do not need to submit your username and password to any application. I have confidence in the readability of my code, so you are welcome to check the code if you are unnecessarily worried.
 
@@ -63,7 +65,7 @@ If mixed content cannot be globally enabled for all page loads forever, you will
 
 ### Script compatibility
 
-I cannot really confirm where it will work and where not yet. Because it is from my private master script and I was the only user, it has not been tested for compatibility until I put it up in an emergency release thread a few days ago. I can only recommend you to use the latest browsers and load it with Greasemonkey or Tampermonkey. It has been confirmed to work with other userscript loaders, but you will need Greasemonkey or Tampermonkey for my master script later when I release it to replace this script.
+I cannot really confirm where it will work and where not yet. Because it is from my private master script and I was the only user, it has not been tested for compatibility until I put it up in an emergency release thread a few days ago. I can only recommend you to use the latest browsers and load it with Tampermonkey or similar loaders. It has been confirmed to work with simpler userscript loaders, but you will need Tampermonkey or similar for my master script when I release it to replace this script some day.
 
 While it should work in modern browsers, how they treat HTTPS-HTTP mixed content makes a critical difference, and you need to follow the right steps to [enable it yourself](#mixed-content). It is at least very easy for me in Chrome and only requires two clicks. Making this script immune to it will at least require me to rewrite a large proportion of this script, and I may not even be good enough to do it. Therefore, I cannot do rewrite it anytime soon and you will have to enable it or rewrite the code yourself.
 
@@ -127,7 +129,9 @@ There is not much to say about this, except you need GP or credits for it, and y
 
 ### H@H download
 
-This is a new feature, because previously I did not have access to it and hence could not add it. This is not enabled by default and you will need to edit [a setting](#`archive_type_to_download`) to use it and select the resample size or original version to download. Let me know if you have problems with this feature.
+This is a new feature, because previously I did not have access to it and hence could not add it. This is not enabled by default and you will need to edit [a setting](#`archive_type_to_download`) to use it by selecting the H@H resample size or the H@H original version to download. When the target H@H resample size is not available for a gallery, the script will automatically download the original version instead. This can happen very often at least when you are downloading newly uploaded galleries before their resamples become available. For this reason, I decided to let the script switch to original without giving a notification, because otherwise the notifications may frequently pause the download process.
+
+This is feature is new, because I do not have access to the H@H downloader and could only add it now with [external help](#credits). I wrote this feature blindly and cannot test it myself, so let me know if you have problems with it.
 
 [⇧ Back to table of contents](#table-of-contents)
 
