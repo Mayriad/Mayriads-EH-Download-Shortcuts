@@ -4,8 +4,8 @@
 // @version         1.5.1
 // @author          Mayriad
 // @description     Adds buttons to download galleries directly from the gallery list
-// @updateURL
-// @downloadURL
+// @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/Mayriads-EH-Download-Shortcuts.user.js
+// @downloadURL     https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/Mayriads-EH-Download-Shortcuts.user.js
 // @include         https://e-hentai.org/*
 // @include         https://ehtracker.org/*
 // @include         htt*://*/*downloadshortcuts=*
@@ -14,7 +14,6 @@
 
 /**
  *  GitHub repository:  https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts
- *  Userscript link:
  *  User manual:        https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/README.md
  *  Forum thread:       https://forums.e-hentai.org/index.php?showtopic=229481
  */
