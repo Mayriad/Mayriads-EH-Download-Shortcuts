@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Mayriad's EH Download Shortcuts
 // @namespace       https://github.com/Mayriad
-// @version         1.5.1
+// @version         1.5.2
 // @author          Mayriad
 // @description     Adds buttons to download galleries directly from the gallery list
 // @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
@@ -112,7 +112,7 @@ let addDownloadShortcuts = function() {
                 sharedDmsStyles = document.createElement('style');
                 sharedDmsStyles.type = 'text/css';
                 sharedDmsStyles.id = 'sharedDmsStyles';
-                sharedDmsStyles.textContent += `
+                sharedDmsStyles.textContent = `
                     #dms > div > input { position: absolute; top: -13px; width: 160px; min-height: 24.5px;
                         height: 24.5px; margin: 3px 1px 0px; line-height: 17px; font-weight: bold; font-size: 10pt;
                         padding: 0px; border-width: 1px; }
@@ -408,6 +408,10 @@ let addDownloadShortcuts = function() {
             if (ARCHIVE_TYPE_TO_DOWNLOAD.includes('H@H')) {
                 let hathTypeLink = xpathSelector('.//a[text() = "' + ARCHIVE_TYPE_TO_DOWNLOAD.match(
                     /H@H (\d+x|Original)/)[1] + '"]');
+				if (hathTypeLink === null) {
+					// Always download the original version instead if the target H@H resample size is not available.
+					hathTypeLink = xpathSelector('.//a[text() = "Original"]');
+				}
                 if (hathTypeLink !== null) {
                     window.onbeforeunload = null;
                     if (hathTypeLink.href !== '#') {
@@ -415,9 +419,8 @@ let addDownloadShortcuts = function() {
                         hathTypeLink.click();
                     } else {
                         postFailure('incorrect setting', 'The H@H download failed, because you have set this ' +
-                            'userscript to use the H@H downloader, but you do not qualify for this downloader. ' +
-                            'Please note that you will only be entitled to use this downloader if you are running a ' +
-                            'H@H client.');
+                            'userscript to use the H@H downloader, but you do not qualify. Please note that you will ' +
+                            'only be entitled to use this downloader if you are running a H@H client.');
                     }
                     return true;
                 }
@@ -457,7 +460,7 @@ let addDownloadShortcuts = function() {
         // Checks for the download ready popup and starts to download the archive.
         let catchDownloadReady = function() {
             if (ARCHIVE_TYPE_TO_DOWNLOAD.includes('H@H')) {
-                if (document.body.textContent.includes('Downloads should start processing within a couple of' +
+                if (document.body.textContent.includes('Downloads should start processing within a couple of ' +
                     'minutes')) {
                     window.onbeforeunload = null;
                     postSuccess();
@@ -499,7 +502,7 @@ let addDownloadShortcuts = function() {
                 return true;
             } else if (bodyText.includes('The archiver assigned to this archive is temporarily unavailable')) {
                 postFailure('server problem', 'The archive download failed, because the archiver for this gallery is ' +
-                'unavailable at the moment. Please wait for a few hours and try again.');
+					'unavailable at the moment. Please wait for a few hours and try again.');
                 return true;
             }
         };
@@ -550,7 +553,7 @@ let addDownloadShortcuts = function() {
 };
 
 // Lets galleries open in new tabs or windows when the links on gallery lists are clicked.
-// This function prevents accidental interruptions when clicking singular download buttons from addDownloadShortcuts().
+// This function also helps to prevent accidental interruptions from misclicks when using addDownloadShortcuts().
 let openGalleriesSeparately = function() {
     let displayMode = document.querySelector('#dms option[selected = "selected"]');
     if (displayMode === null) {
