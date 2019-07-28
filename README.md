@@ -59,7 +59,7 @@ I have not tested them yet, but you can search online for solutions. The EH wiki
 
 When the script successfully starts a actual download or found a gallery with a lasting problem, the singular download buttons will say ["done" or "failed"](#singular-download). This lets you keep track of the galleries you have downloaded, but only temporarily before you move to another page or refresh the page. Therefore, you should not leave or refresh a gallery list page before you have downloaded every gallery you need on a page. Because it is possible for you to accidentally click a gallery link and leave the page, I have imported another function from my master script that makes all galleries open in new tabs.
 
-If mixed content cannot be globally enabled for all page loads forever, you will need to manually enable it for each tab like on Chrome. In this case, the page may refresh after it is enabled and that will reset the download buttons and your temporary download records. Therefore, if you are downloading both archives and torrents, you should enable mixed content and trigger this page refresh first, by triggering an archive download on a gallery without torrent, before you actually start your organised download process.
+If mixed content cannot be globally enabled for all page loads forever, you will need to manually enable it for each tab e.g., Chrome. In this case, the page may refresh after it is enabled and that will reset the download buttons and your temporary download records. Therefore, if you are downloading both archives and torrents, you should enable mixed content and trigger this page refresh first, by triggering an archive download on a gallery without torrent, before you actually start your organised download process.
 
 By the way, it is not possible to keep permanent download records, because this would not be safe. Because ratings probably apply to gallery chains like favourites, galleries that have been added to a permanent download record will not be automatically downloaded again after these galleries are updated, because the script will skip them. Therefore, you will miss all updated galleries.
 
@@ -67,7 +67,7 @@ By the way, it is not possible to keep permanent download records, because this 
 
 I cannot really confirm where it will work and where not yet. Because it is from my private master script and I was the only user, it has not been tested for compatibility until I put it up in an emergency release thread a few days ago. I can only recommend you to use the latest browsers and load it with Greasemonkey or Tampermonkey. It has been confirmed to work with other userscript loaders, but you will need Greasemonkey or Tampermonkey for my master script later when I release it to replace this script.
 
-While it should work on modern browsers, how they treat HTTPS-HTTP mixed content makes a critical difference, and you need to follow the right steps to [enable it yourself](#mixed-content). It is at least very easy for me on Chrome and only requires two clicks. Making this script immune to it will at least require me to rewrite a large proportion of this script, and I may not even be good enough to do it. Therefore, I cannot do rewrite it anytime soon and you will have to enable it or rewrite the code yourself.
+While it should work in modern browsers, how they treat HTTPS-HTTP mixed content makes a critical difference, and you need to follow the right steps to [enable it yourself](#mixed-content). It is at least very easy for me in Chrome and only requires two clicks. Making this script immune to it will at least require me to rewrite a large proportion of this script, and I may not even be good enough to do it. Therefore, I cannot do rewrite it anytime soon and you will have to enable it or rewrite the code yourself.
 
 ### Project limitations
 
@@ -190,7 +190,7 @@ If your singular download buttons are stuck in the "loading" state when you are 
 
 - You can download the archive manually.
 
-- On Chrome, you see a shield icon next to the bookmark star at the right end of the omnibox.
+- In Chrome, you see a shield icon next to the bookmark star at the right end of the omnibox.
 
 - Your browser says something about blocking mixed content. For example, Chrome would say:
 
@@ -214,7 +214,7 @@ Actual download might fail if your internet connection is unstable, which is bey
 
 I am wondering whether there can be missed or duplicate downloads when you use this userscript, especially when you download a lot of galleries at roughly the same time. I have been using it for a long time and I have not had this problem, so I am no idea if it will actually happen. This does not include failed downloads due to bad connection or other external factors.
 
-Then, there are two things I need help with: if you can tell me how you enabled mixed content on your browser, that would help a lot. Also, the code cannot handle the error the site throws when you have insufficient funds for an archive download, because I will not be able to see it. Therefore, please let me know how the popup looks and what it says.
+Then, there are two things I need help with: if you can tell me how you enabled mixed content in your browser, that would help a lot. Also, the code cannot handle the error the site throws when you have insufficient funds for an archive download, because I will not be able to see it. Therefore, please let me know how the popup looks and what it says.
 
 [⇧ Back to table of contents](#table-of-contents)
 
