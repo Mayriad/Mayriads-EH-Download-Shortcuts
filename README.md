@@ -224,6 +224,6 @@ Then, there are two things I need help with: if you can tell me how you enabled 
 
 - Tenboro, EH staff members and contributors (which includes myself), for running the website for so many years.
 - EH member hzqr, for his old gallery downloader userscript, which somewhat influenced the download function in my master script.
-- EH member spdu, for supplying reference material for the H@H downloader feature and later testing it, because I do not have access to this downloader myself.
+- EH member Spdu, for supplying reference material for the H@H downloader feature and later testing it, because I do not have access to this downloader myself.
 
 [⇧ Back to table of contents](#table-of-contents)
