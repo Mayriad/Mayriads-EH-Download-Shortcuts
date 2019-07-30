@@ -17,8 +17,8 @@
  *  User manual:        https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/README.md
  *  Forum thread:       https://forums.e-hentai.org/index.php?showtopic=229481
  *
- *	Please note that the settings below will be reset after an update, so you will need to edit them again if they have
- *	been edited. This script will not need a lot of updates in the future, so hopefully the annoyance can be minimised.
+ *  Please note that the settings below will be reset after an update, so you will need to edit them again if they have
+ *  been edited. This script will not need a lot of updates in the future, so hopefully the annoyance can be minimised.
  */
 
 // Settings that you can change after reading the readme on GitHub -----------------------------------------------------
@@ -70,7 +70,7 @@ let addDownloadShortcuts = function() {
             downloadButtonStyles.id = 'downloadButtonStyles';
             downloadButtonStyles.textContent = `
                 .downloadButton { position: absolute; top: 0px; left: 0px; box-shadow: none; z-index: 1;
-					transition: all 0.2s; margin: -1px; }
+                    transition: all 0.2s; margin: -1px; }
                 .downloadButton.idle { background-color: rgba(34, 167, 240, 1); cursor: pointer; opacity: 0;
                     border: 1px solid rgba(0, 127, 200, 1); }
                 .downloadButton.loading { background-color: rgba(247, 202, 24, 1); cursor: default;
@@ -80,7 +80,7 @@ let addDownloadShortcuts = function() {
                 .downloadButton.failed, .downloadButton.unavailable { background-color: rgba(255, 0, 0, 1);
                     cursor: pointer; border: 1px solid rgba(215, 0, 0, 1); }
                 .downloadButton.idle:hover { box-shadow: 0px 1px 7px 2px rgba(34, 167, 240, 0.6); }
-				.hiddenIframe { position: absolute; bottom: -100vh; visibility: hidden; }`;
+                .hiddenIframe { position: absolute; bottom: -100vh; visibility: hidden; }`;
 
             // Set the button size each display mode.
             switch (displayMode) {
@@ -203,11 +203,11 @@ let addDownloadShortcuts = function() {
                         idleButtons[i].click();
                     }
                 } else {
-					// Do not declare page completion when there are ongoing tasks, since these may end up in the
-					// "unavailable" state.
-					if (document.body.querySelectorAll('.downloadButton.loading').length === 0) {
-						batchButton.value = 'No More Galleries';
-					}
+                    // Do not declare page completion when there are ongoing tasks, since these may end up in the
+                    // "unavailable" state.
+                    if (document.body.querySelectorAll('.downloadButton.loading').length === 0) {
+                        batchButton.value = 'No More Galleries';
+                    }
                 }
             });
             let batchDiv = document.createElement('div');
@@ -237,7 +237,7 @@ let addDownloadShortcuts = function() {
             iframe.src = appendQueryString((downloadButton.getAttribute('data-torrent') !== 'none' ?
                 downloadButton.getAttribute('data-torrent') : downloadButton.getAttribute('data-gallery')),
                 nonce, downloadButton.getAttribute('data-timestamp'));
-			// A class is used because the iframe here would not work on Firefox if display: none is used.
+            // A class is used because the iframe here would not work on Firefox if display: none is used.
             iframe.className = 'hiddenIframe';
             document.body.appendChild(iframe);
             scheduleDownloadTimeout(nonce);
@@ -405,7 +405,7 @@ let addDownloadShortcuts = function() {
             let skipWarningLink = xpathSelector('.//a[text() = "View Gallery"]');
             if (skipWarningLink !== null) {
                 window.onbeforeunload = null;
-				skipWarningLink.href = appendQueryString(skipWarningLink.href, nonce);
+                skipWarningLink.href = appendQueryString(skipWarningLink.href, nonce);
                 skipWarningLink.click();
                 return true;
             }
@@ -428,10 +428,10 @@ let addDownloadShortcuts = function() {
             if (ARCHIVE_TYPE_TO_DOWNLOAD.includes('H@H')) {
                 let hathTypeLink = xpathSelector('.//a[text() = "' + ARCHIVE_TYPE_TO_DOWNLOAD.match(
                     /H@H (\d+x|Original)/)[1] + '"]');
-				if (hathTypeLink === null) {
-					// Always download the original version instead if the target H@H resample size is not available.
-					hathTypeLink = xpathSelector('.//a[text() = "Original"]');
-				}
+                if (hathTypeLink === null) {
+                    // Always download the original version instead if the target H@H resample size is not available.
+                    hathTypeLink = xpathSelector('.//a[text() = "Original"]');
+                }
                 if (hathTypeLink !== null) {
                     window.onbeforeunload = null;
                     if (hathTypeLink.href !== '#') {
@@ -447,10 +447,10 @@ let addDownloadShortcuts = function() {
             } else {
                 let archiveTypeButton = xpathSelector('.//input[@value = "' + ARCHIVE_TYPE_TO_DOWNLOAD + '"]');
                 if (archiveTypeButton !== null) {
-					if (archiveTypeButton.disabled) {
-						// Always download the original version instead if the resample archive is not available.
-						archiveTypeButton = xpathSelector('.//input[@value = "Download Original Archive"]');
-					}
+                    if (archiveTypeButton.disabled) {
+                        // Always download the original version instead if the resample archive is not available.
+                        archiveTypeButton = xpathSelector('.//input[@value = "Download Original Archive"]');
+                    }
                     window.onbeforeunload = null;
                     archiveTypeButton.parentNode.parentNode.action = appendQueryString(
                         archiveTypeButton.parentNode.parentNode.action, nonce);
@@ -526,7 +526,7 @@ let addDownloadShortcuts = function() {
                 return true;
             } else if (bodyText.includes('The archiver assigned to this archive is temporarily unavailable')) {
                 postFailure('server problem', 'The archive download failed, because the archiver for this gallery is ' +
-					'unavailable at the moment. Please wait for a few hours and try again.');
+                    'unavailable at the moment. Please wait for a few hours and try again.');
                 return true;
             }
         };
