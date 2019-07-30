@@ -6,7 +6,7 @@ A userscript for e-hentai galleries that automates the standard download process
 
 ## Table of contents
 
-- [TLDR](#tldr)
+- [TL;DR](#tl;dr)
 - [About](#about)
 - [Precautions](#precautions)
 - [Features](#features)
@@ -15,7 +15,7 @@ A userscript for e-hentai galleries that automates the standard download process
 - [Issues](#issues)
 - [Credits](#credits)
 
-## TLDR
+## TL;DR
 
 This readme or user manual has 3000+ words, so I think I should put this here:
 
@@ -25,13 +25,13 @@ This script lets you download archives, torrents en masse directly from e-hentai
 
 This script may be the fastest option for mass downloads, but you will need GP or credits to download archives since it is not an image crawler.
 
-This is an premature extract from my private master script and I am not a programmer, so it is not widely tested yet and there may be limited support. I was not even planning to release this.
-
-There are settings in the code and their names are obvious enough to you to use and change. The behaviour of this script is also affected by your EH home settings.
-
 You need to [enable mixed contents](#mixed-content) to download archives. Read [the troubleshooting section](#troubleshooting) if you have problems, or make a post in [the official release thread](https://forums.e-hentai.org/index.php?showtopic=229481).
 
+This is an premature extract from my private master script and I am not a programmer, so it is not widely tested yet and there may be limited support. I was not even planning to release this.
+
 You should be able to update this script directly from your userscript loader e.g., Tampermonkey, and you should do so to keep this script up to date.
+
+There are settings in the code and their names are obvious enough to you to use and change, but they will be reset after an update, so you will need to edit them again if they have been previously edited.
 
 [⇧ Back to table of contents](#table-of-contents)
 
@@ -49,27 +49,39 @@ I was not planning to release this particular script, because I am nowhere close
 
 ### Mixed content
 
-You need to enable mixed content in browser settings to download doggie bag archives, which is available for all galleries and all registered members. It is irrelevant only if you have set the script to only download torrents and/or use the H@H downloader. This part will be updated in the future I do more tests or get more helpful reports.
+You need to enable mixed content in browser settings to download doggie bag archives, which is available for all galleries and all registered members. It is irrelevant only if you have set the script to only download torrents and/or use the H@H downloader. This part will be updated in the future to include more methods, but this is just a general issue and you can easily find solutions if you just Google something like "Firefox enable mixed content".
 
-For Chrome:
+There can be two ways to enable mixed content for each browser. The first way only applies to the tab and the domain where you enabled it, so other tabs are not affected and would still block mixed content. I think once you enable it this way, the tab will keep this status before you change the domain by leaving EH, so you can just reuse one tab for all archive downloads.
 
-When the script downloads an archive, you will see a shield icon next to the bookmark star at the right end of the omnibox. Click it and it will show a notification titled "insecure content blocked". It should have a link that says "load unsafe scripts", and you need to click this link. After you clicked it, the page will reload and then mixed content will be enabled. Note that this only applies to the tab and the domain where you did the above, so other tabs are not affected by this settings. I think once you enable it, the tab will keep this status before you change the domain by leaving EH, so you can just reuse one tab for all archive downloads.
+**Per-tab method for Chrome**
 
-For other browsers:
+When the script downloads an archive, you will see a shield icon next to the bookmark star at the right end of the omnibox. Click it and it will show a notification panel titled "insecure content blocked". It should have a link that says "load unsafe scripts", and you need to click this link. After you clicked it, the page will reload and then mixed content will be enabled.
 
-I have not tested them yet, but you can search online for solutions. The EH wiki article on technical problems also has relevant information, because images are served from H@H servers via HTTP. It is the "images are not loading" part [here](https://ehwiki.org/wiki/Technical_Issues#E-Hentai_Galleries). Please let me know if you have a working solution.
+**Per-tab method for Firefox**
+
+Firstly, you need to trigger the blocking of mixed content by using this script to download an archive. You need to click the `ⓘ` icon at at the left end of the address bar. This will open the site information panel, and if it says "Firefox has blocked parts of this page that are not secure", then it has been triggered, and you can click the arrow to the right of this message and click "disable protection for now". After you clicked it, the page will reload and then mixed content will be enabled for this tab.
+
+**Global method for Firefox**
+
+You can go to your advanced settings by entering `about:config` in the address bar. Then you can search for the flag `security.mixed_content.block_active_content` and toggle it, so that its value is changed to `false`. After you have done this, this script will always work and you will not need to enable mixed content for each tab. The downside is that this script is not the only thing that will be permanently allowed, so this method poses security risks and I cannot recommend it.
+
+**Methods for other browsers**
+
+I have not tested other browsers yet, but you can search online for solutions. The EH wiki article on technical problems also has relevant information, because images are served from H@H servers via HTTP. It is the "images are not loading" part [here](https://ehwiki.org/wiki/Technical_Issues#E-Hentai_Galleries). Please let me know if you have a working solution.
+
+### Script compatibility
+
+At the moment, I think it should at least work fine with Tampermonkey and Violentmonkey on Chrome and Firefox. Of course, they all need to be fairly up to date. Greasemonkey will not be supported due to problems like load timing. I think Edge also cannot be supported because it does not have an option for mixed content.
+
+While it should work in modern browsers, how they treat HTTPS-HTTP mixed content makes a critical difference, and you need to follow the right steps to [enable it yourself](#mixed-content). It is generally very easy and it can be permanently enabled, although I cannot recommend this. Making this script immune to it will at least require me to rewrite a large proportion of this script, and I may not even be good enough to do it. Therefore, I cannot do rewrite it anytime soon and you will have to enable it or rewrite the code yourself.
+
+Since this script only automates the official processes on the website, the actual downloads are still handled by your browser and any relevant extension you run. To ensure the best download experience, I will recommend you to let your browser or extension automatically download all files without promoting you to select a download location for each file.
 
 ### Download records
 
 When the script successfully starts a actual download or found a gallery with a lasting problem, the singular download buttons will say ["done" or "failed"](#singular-download). This lets you keep track of the galleries you have downloaded, but only temporarily before you move to another page or refresh the page. Therefore, you should not leave or refresh a gallery list page before you have downloaded every gallery you need on a page. Because it is possible for you to accidentally click a gallery link and leave the page, I have imported another function from my master script that makes all galleries open in new tabs.
 
 If mixed content cannot be globally enabled for all page loads forever, you will need to manually enable it for each tab e.g., Chrome. In this case, the page may refresh after it is enabled and that will reset the download buttons and your temporary download records. Therefore, if you are downloading both archives and torrents, you should enable mixed content and trigger this page refresh first, by triggering an archive download on a gallery without torrent, before you actually start your organised download process.
-
-### Script compatibility
-
-I cannot really confirm where it will work and where not yet. Because it is from my private master script and I was the only user, it has not been tested for compatibility until I put it up in an emergency release thread a few days ago. I can only recommend you to use the latest browsers and load it with Tampermonkey or similar loaders. It has been confirmed to work with simpler userscript loaders, but you will need Tampermonkey or similar for my master script when I release it to replace this script some day.
-
-While it should work in modern browsers, how they treat HTTPS-HTTP mixed content makes a critical difference, and you need to follow the right steps to [enable it yourself](#mixed-content). It is at least very easy for me in Chrome and only requires two clicks. Making this script immune to it will at least require me to rewrite a large proportion of this script, and I may not even be good enough to do it. Therefore, I cannot do rewrite it anytime soon and you will have to enable it or rewrite the code yourself.
 
 ### Project limitations
 
@@ -127,7 +139,7 @@ Lastly, please note that the redistributable torrent will be served by the site 
 
 ### Gallery download
 
-There is not much to say about this, except you need GP or credits for it, and you can configure the script to download the original or resample archive using [its setting](#`archive_type_to_download`).
+There is not much to say about this, except you need GP or credits for it, and you can configure the script to download the original or resample archive using [its setting](#`archive_type_to_download`). When you set the script to download the resample archive and it is is not available, the script will automatically download the original version instead.
 
 ### H@H download
 
@@ -139,7 +151,7 @@ This is feature is new, because I do not have access to the H@H downloader and c
 
 ## Settings
 
-You can find the settings for this script at the beginning of the code. I think you would not need to change these once you have figured out what is optimal for you. You can find detailed explanations relating to these settings in [the features section](#features) above.
+You can find the settings for this script at the beginning of the code. I think you would not need to change these once you have figured out what is optimal for you. You can find detailed explanations relating to these settings in [the features section](#features) above. Please note that the settings below will be reset after an update, so you will need to edit them again if they have been previously edited. This script will not need a lot of updates in the future, so hopefully the annoyance can be minimised.
 
 ### `ENABLE_TORRENT_DOWNLOAD`
 
