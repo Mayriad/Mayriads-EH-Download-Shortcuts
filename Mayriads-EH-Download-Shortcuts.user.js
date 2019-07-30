@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Mayriad's EH Download Shortcuts
 // @namespace       https://github.com/Mayriad
-// @version         1.5.2
+// @version         1.5.3
 // @author          Mayriad
 // @description     Adds buttons to download galleries directly from the gallery list
 // @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
@@ -16,6 +16,9 @@
  *  GitHub repository:  https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts
  *  User manual:        https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/blob/master/README.md
  *  Forum thread:       https://forums.e-hentai.org/index.php?showtopic=229481
+ *
+ *	Please note that the settings below will be reset after an update, so you will need to edit them again if they have
+ *	been edited. This script will not need a lot of updates in the future, so hopefully the annoyance can be minimised.
  */
 
 // Settings that you can change after reading the readme on GitHub -----------------------------------------------------
@@ -32,7 +35,7 @@ const BATCH_DOWNLOAD_NUMBER = 3;
 
 const HIDE_THUMBNAIL_UPON_DOWNLOAD = true;
 
-const HIDE_ERROR_MESSAGES = false;
+const HIDE_ERROR_NOTIFICATIONS = false;
 
 // Code that you should not change unless you know what you are doing --------------------------------------------------
 
@@ -66,8 +69,9 @@ let addDownloadShortcuts = function() {
             downloadButtonStyles.type = 'text/css';
             downloadButtonStyles.id = 'downloadButtonStyles';
             downloadButtonStyles.textContent = `
-                .downloadButton { position: absolute; top: -1px; left: -1px; box-shadow: none; z-index: 1; }
-                .downloadButton.idle { background-color: rgba(34, 167, 240, 1); cursor: pointer; display: none;
+                .downloadButton { position: absolute; top: 0px; left: 0px; box-shadow: none; z-index: 1;
+					transition: all 0.2s; margin: -1px; }
+                .downloadButton.idle { background-color: rgba(34, 167, 240, 1); cursor: pointer; opacity: 0;
                     border: 1px solid rgba(0, 127, 200, 1); }
                 .downloadButton.loading { background-color: rgba(247, 202, 24, 1); cursor: default;
                     border: 1px solid rgba(207, 162, 0, 1); }
@@ -75,7 +79,8 @@ let addDownloadShortcuts = function() {
                     border: 1px solid rgba(0, 0, 0, 1); }
                 .downloadButton.failed, .downloadButton.unavailable { background-color: rgba(255, 0, 0, 1);
                     cursor: pointer; border: 1px solid rgba(215, 0, 0, 1); }
-                .downloadButton.idle:hover { box-shadow: 0px 0.5px 4px 2px rgba(34, 167, 240, 0.6); }`;
+                .downloadButton.idle:hover { box-shadow: 0px 1px 7px 2px rgba(34, 167, 240, 0.6); }
+				.hiddenIframe { position: absolute; bottom: -100vh; visibility: hidden; }`;
 
             // Set the button size each display mode.
             switch (displayMode) {
@@ -183,7 +188,34 @@ let addDownloadShortcuts = function() {
             };
         };
 
-        let runningDownloads = {};
+        // Adds a button next to the gallery list display mode selector to download multiple galleries at once.
+        let addBatchButton = function() {
+            let batchButton = document.createElement('input');
+            batchButton.type = 'button';
+            batchButton.id = 'batchButton';
+            batchButton.value = 'Download ' + BATCH_DOWNLOAD_NUMBER + ' Galleries';
+            batchButton.title = 'Automatically download the next ' + BATCH_DOWNLOAD_NUMBER + ' available galleries ' +
+                'on current page.';
+            batchButton.addEventListener('click', function attemptBatchDownload() {
+                let idleButtons = document.body.querySelectorAll('.downloadButton.idle, .downloadButton.unavailable');
+                if (idleButtons.length !== 0) {
+                    for (let i = 0; i < Math.min(BATCH_DOWNLOAD_NUMBER, idleButtons.length); ++i) {
+                        idleButtons[i].click();
+                    }
+                } else {
+					// Do not declare page completion when there are ongoing tasks, since these may end up in the
+					// "unavailable" state.
+					if (document.body.querySelectorAll('.downloadButton.loading').length === 0) {
+						batchButton.value = 'No More Galleries';
+					}
+                }
+            });
+            let batchDiv = document.createElement('div');
+            batchDiv.appendChild(batchButton);
+            document.getElementById('dms').appendChild(batchDiv);
+        }
+
+        let runningAttempts = {};
 
         // Starts an automated download process when a download button is clicked.
         let attemptGalleryDownload = function(ev) {
@@ -197,7 +229,7 @@ let addDownloadShortcuts = function() {
 
             let nonce = Math.floor(Math.random() * (1 << 30));
             let iframe = document.createElement('iframe');
-            runningDownloads[nonce] = {
+            runningAttempts[nonce] = {
                 downloadButton: downloadButton,
                 iframe: iframe,
                 timeout: null
@@ -205,15 +237,16 @@ let addDownloadShortcuts = function() {
             iframe.src = appendQueryString((downloadButton.getAttribute('data-torrent') !== 'none' ?
                 downloadButton.getAttribute('data-torrent') : downloadButton.getAttribute('data-gallery')),
                 nonce, downloadButton.getAttribute('data-timestamp'));
-            iframe.style.display = 'none';
-            scheduleDownloadTimeout(nonce);
+			// A class is used because the iframe here would not work on Firefox if display: none is used.
+            iframe.className = 'hiddenIframe';
             document.body.appendChild(iframe);
+            scheduleDownloadTimeout(nonce);
         };
 
         // Schedules a timeout that cancels a download attempt if it does not succeed in 15 seconds.
         let scheduleDownloadTimeout = function(nonce) {
-            clearTimeout(runningDownloads[nonce].timeout);
-            runningDownloads[nonce].timeout = setTimeout(function() {
+            clearTimeout(runningAttempts[nonce].timeout);
+            runningAttempts[nonce].timeout = setTimeout(function() {
                 onFailure({
                     type: 'failure',
                     nonce: nonce,
@@ -226,7 +259,7 @@ let addDownloadShortcuts = function() {
         let addMessageListener = function() {
             window.addEventListener('message', function(ev) {
                 let message = ev.data;
-                if (!runningDownloads.hasOwnProperty(message.nonce)) {
+                if (!runningAttempts.hasOwnProperty(message.nonce)) {
                     return;
                 }
                 switch (message.type) {
@@ -244,21 +277,21 @@ let addDownloadShortcuts = function() {
 
         // Opens an iframe to attempt the actual archive or torrent download once the file address is received.
         let onDownload = function(message) {
-            let download = runningDownloads[message.nonce];
-            clearTimeout(download.timeout);
-            document.body.removeChild(download.iframe);
+            let attempt = runningAttempts[message.nonce];
+            clearTimeout(attempt.timeout);
+            document.body.removeChild(attempt.iframe);
 
             let iframe = document.createElement('iframe');
             iframe.src = appendQueryString(message.url, message.nonce);
-            iframe.style.display = 'none';
-            download.iframe = iframe;
+            iframe.className = 'hiddenIframe';
+            attempt.iframe = iframe;
             document.body.appendChild(iframe);
 
             // Check whether the download is successful only after 1 second, by checking whether onFailure() has
             // deleted the nonce first. The delay is needed to ensure onFailure() finishes deleting the nonce first
             // when needed. This will cause a visible delay but anything below 1 second may not be safe.
             setTimeout(function() {
-                if (runningDownloads.hasOwnProperty(message.nonce)) {
+                if (runningAttempts.hasOwnProperty(message.nonce)) {
                     onSuccess(message);
                 }
             }, 1000);
@@ -266,11 +299,11 @@ let addDownloadShortcuts = function() {
 
         // Terminates a download attempt and reacts appropriately once a failure message is received.
         let onFailure = function(message) {
-            let download = runningDownloads[message.nonce];
-            delete runningDownloads[message.nonce];
-            clearTimeout(download.timeout);
-            let downloadButton = download.downloadButton;
-            document.body.removeChild(download.iframe);
+            let attempt = runningAttempts[message.nonce];
+            delete runningAttempts[message.nonce];
+            clearTimeout(attempt.timeout);
+            let downloadButton = attempt.downloadButton;
+            document.body.removeChild(attempt.iframe);
 
             switch (message.reason) {
                 case 'timeout':
@@ -294,21 +327,21 @@ let addDownloadShortcuts = function() {
                     // For other reasons, do not retry, declare a failure and give a notification instead.
                     downloadButton.className = downloadButton.className.replace('loading', 'failed');
                     downloadButton.textContent = 'Failed';
-                    if (!HIDE_ERROR_MESSAGES) {
-                        alert(message.reason);
+                    if (!HIDE_ERROR_NOTIFICATIONS) {
+                        alert(message.notification);
                     }
             }
         };
 
         // Cleans up after a sucessful file download.
         let onSuccess = function(message) {
-            let download = runningDownloads[message.nonce];
-            clearTimeout(download.timeout);
-            delete runningDownloads[message.nonce];
-            let downloadButton = download.downloadButton;
+            let attempt = runningAttempts[message.nonce];
+            clearTimeout(attempt.timeout);
+            delete runningAttempts[message.nonce];
+            let downloadButton = attempt.downloadButton;
 
             // Wait for 15 seconds before closing the download iframe because downloads may start slowly.
-            setTimeout(() => { document.body.removeChild(download.iframe); }, 15000);
+            setTimeout(() => { document.body.removeChild(attempt.iframe); }, 15000);
             downloadButton.className = downloadButton.className.replace('loading', 'done');
             downloadButton.textContent = 'Done';
 
@@ -317,30 +350,6 @@ let addDownloadShortcuts = function() {
                 downloadButton.dataThumbnail.parentNode.style.visibility = 'hidden';
             }
         };
-
-        // Adds a button next to the gallery list display mode selector to download multiple galleries at once.
-        let addBatchButton = function() {
-            let batchButton = document.createElement('input');
-            batchButton.type = 'button';
-            batchButton.id = 'batchButton';
-            batchButton.value = 'Download ' + BATCH_DOWNLOAD_NUMBER + ' Galleries';
-            batchButton.title = 'Automatically download the next ' + BATCH_DOWNLOAD_NUMBER + ' available galleries ' +
-                'on current page.';
-            batchButton.addEventListener('click', function attemptBatchDownload() {
-                let idleButtons = document.body.querySelectorAll('.downloadButton.idle, .downloadButton.unavailable');
-                if (idleButtons.length !== 0) {
-                    for (let i = 0; i < Math.min(BATCH_DOWNLOAD_NUMBER, idleButtons.length); ++i) {
-                        idleButtons[i].click();
-                    }
-                } else {
-                    batchButton.value = 'No More Galleries';
-                    batchButton.removeEventListener('click', attemptBatchDownload);
-                }
-            });
-            let batchDiv = document.createElement('div');
-            batchDiv.appendChild(batchButton);
-            document.getElementById('dms').appendChild(batchDiv);
-        }
 
         addCustomStyles();
         addDownloadButtons();
@@ -391,6 +400,17 @@ let addDownloadShortcuts = function() {
             }
         };
 
+        // Checks for a possible content warning page and skips it once.
+        let catchContentWarning = function() {
+            let skipWarningLink = xpathSelector('.//a[text() = "View Gallery"]');
+            if (skipWarningLink !== null) {
+                window.onbeforeunload = null;
+				skipWarningLink.href = appendQueryString(skipWarningLink.href, nonce);
+                skipWarningLink.click();
+                return true;
+            }
+        };
+
         // Checks for the gallery view page and selects archive download.
         let catchGalleryPage = function() {
             let archiveDownloadButton = xpathSelector('.//a[text() = "Archive Download"]');
@@ -427,6 +447,10 @@ let addDownloadShortcuts = function() {
             } else {
                 let archiveTypeButton = xpathSelector('.//input[@value = "' + ARCHIVE_TYPE_TO_DOWNLOAD + '"]');
                 if (archiveTypeButton !== null) {
+					if (archiveTypeButton.disabled) {
+						// Always download the original version instead if the resample archive is not available.
+						archiveTypeButton = xpathSelector('.//input[@value = "Download Original Archive"]');
+					}
                     window.onbeforeunload = null;
                     archiveTypeButton.parentNode.parentNode.action = appendQueryString(
                         archiveTypeButton.parentNode.parentNode.action, nonce);
@@ -523,12 +547,12 @@ let addDownloadShortcuts = function() {
         };
 
         // Posts a message to the gallery list hosting this iframe to signal a failed attempt and pass the reason.
-        let postFailure = function(reason, message) {
+        let postFailure = function(reason, notification) {
             parent.postMessage({
                 type: 'failure',
                 nonce: nonce,
                 reason: reason,
-                message: message
+                notification: notification
             }, '*');
         };
 
@@ -540,8 +564,8 @@ let addDownloadShortcuts = function() {
             }, '*');
         };
 
-        if (catchTorrentList() || catchGalleryPage() || catchArchiveSelection() || catchLocatingServer() ||
-            catchDownloadReady() || catchErrorMessages()) {
+        if (catchTorrentList() || catchContentWarning() || catchGalleryPage() || catchArchiveSelection() ||
+            catchLocatingServer() || catchDownloadReady() || catchErrorMessages()) {
             // Check for different popups in the download process and react accordingly.
             return;
         } else {
