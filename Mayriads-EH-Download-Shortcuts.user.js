@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name            Mayriad's EH Download Shortcuts
 // @namespace       https://github.com/Mayriad
-// @version         1.5.3
+// @version         1.5.4
 // @author          Mayriad
 // @description     Adds buttons to download galleries directly from the gallery list
 // @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
 // @downloadURL     https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
 // @include         https://e-hentai.org/*
 // @include         https://ehtracker.org/*
-// @include         htt*://*/*downloadshortcuts=*
+// @include         htt*://*/*mayriadehdownloadshortcuts=*
 // @run-at          document-start
 // ==/UserScript==
 
@@ -21,7 +21,7 @@
  *  been edited. This script will not need a lot of updates in the future, so hopefully the annoyance can be minimised.
  */
 
-// Settings that you can change after reading the readme on GitHub -----------------------------------------------------
+// Settings that you can change after reading the user manual on GitHub ------------------------------------------------
 
 const ENABLE_TORRENT_DOWNLOAD = true;
 
@@ -49,12 +49,12 @@ let onDomLoad = function() {
 let addDownloadShortcuts = function() {
     // Appends a query string that carries the information from this function to a URL.
     let appendQueryString = function(url, nonce, timestamp) {
-        return url + (url.includes('?') ? '&' : '?') + 'downloadshortcuts=' + nonce + (timestamp !== undefined ?
-            '&timestamp=' + timestamp : '');
+        return url + (url.includes('?') ? '&' : '?') + 'mayriadehdownloadshortcuts=' + nonce +
+            (timestamp !== undefined ? '&timestamp=' + timestamp : '');
     }
 
     // This half applies to gallery list pages as their url's will not contain the query string.
-    if (!window.location.href.includes('downloadshortcuts=')) {
+    if (!window.location.href.includes('mayriadehdownloadshortcuts=')) {
         let displayMode = document.body.querySelector('#dms option[selected = "selected"]');
         if (displayMode === null) {
             // Do not run this function if not on a gallery list.
@@ -73,7 +73,7 @@ let addDownloadShortcuts = function() {
                     transition: all 0.2s; margin: -1px; }
                 .downloadButton.idle { background-color: rgba(34, 167, 240, 1); cursor: pointer; opacity: 0;
                     border: 1px solid rgba(0, 127, 200, 1); }
-                .downloadButton.loading { background-color: rgba(247, 202, 24, 1); cursor: default;
+                .downloadButton.loading { background-color: rgba(247, 202, 24, 1); cursor: pointer;
                     border: 1px solid rgba(207, 162, 0, 1); }
                 .downloadButton.done { background-color: rgba(0, 0, 0, 1); cursor: default;
                     border: 1px solid rgba(0, 0, 0, 1); }
@@ -181,7 +181,7 @@ let addDownloadShortcuts = function() {
                     }
                 }
                 downloadButton.setAttribute('data-timestamp', Date.parse(timestamps[i].textContent));
-                downloadButton.addEventListener('click', attemptGalleryDownload);
+                downloadButton.addEventListener('click', attemptSingularDownload);
                 bases[i].removeAttribute('onClick');
                 bases[i].style.position = 'relative';
                 bases[i].appendChild(downloadButton);
@@ -218,10 +218,14 @@ let addDownloadShortcuts = function() {
         let runningAttempts = {};
 
         // Starts an automated download process when a download button is clicked.
-        let attemptGalleryDownload = function(ev) {
+        let attemptSingularDownload = function(ev) {
             let downloadButton = ev.target;
-            if (/loading|done/.test(downloadButton.className)) {
-                // Do nothing if the download is already loading or completed.
+            if (downloadButton.className.includes('done')) {
+                // Do nothing if the download attempt has already been successful.
+                return;
+            } else if (downloadButton.className.includes('loading')) {
+                // Cancel the attempt if the button is clicked while it is loading.
+                cancelSingularDownload(downloadButton);
                 return;
             }
             downloadButton.className = downloadButton.className.replace(/idle|unavailable/, 'loading');
@@ -243,6 +247,24 @@ let addDownloadShortcuts = function() {
             scheduleDownloadTimeout(nonce);
         };
 
+        // Stops a singular download attempt when the corresponding button is clicked while it is still loading.
+        let cancelSingularDownload = function(downloadButton) {
+            for (let nonce in runningAttempts) {
+                if (!runningAttempts.hasOwnProperty(nonce)) {
+                    // Skip this key if it is something else from the prototype.
+                    continue;
+                }
+                if (runningAttempts[nonce].downloadButton === downloadButton) {
+                    onFailure({
+                        type: 'failure',
+                        nonce: nonce,
+                        reason: 'user input',
+                        notification: 'The download attempt has been manually canceled.'
+                    });
+                }
+            }
+        }
+
         // Schedules a timeout that cancels a download attempt if it does not succeed in 15 seconds.
         let scheduleDownloadTimeout = function(nonce) {
             clearTimeout(runningAttempts[nonce].timeout);
@@ -250,7 +272,8 @@ let addDownloadShortcuts = function() {
                 onFailure({
                     type: 'failure',
                     nonce: nonce,
-                    reason: 'timeout'
+                    reason: 'timeout',
+                    notification: 'The download attempt timed out. A retry will be started automatically.'
                 });
             }, 15000);
         };
@@ -317,6 +340,11 @@ let addDownloadShortcuts = function() {
                     downloadButton.className = downloadButton.className.replace('loading', 'idle');
                     downloadButton.click();
                     break;
+                case 'user input':
+                    // Reset the button when the attempt is cancelled by user.
+                    downloadButton.className = downloadButton.className.replace('loading', 'idle');
+                    downloadButton.textContent = 'Download';
+                    break;
                 case 'unavailable torrent':
                 case 'server problem':
                     // Allow downloads that failed due to temporarily unavailable torrent or server to be retried.
@@ -360,7 +388,7 @@ let addDownloadShortcuts = function() {
     // at every stage of the iframe. For iframes opened using download links, this section only runs when the download
     // link leads to an error page, so not when the download is successful.
     } else {
-        let nonce = window.location.href.match(/downloadshortcuts=(\d+)/)[1];
+        let nonce = window.location.href.match(/mayriadehdownloadshortcuts=(\d+)/)[1];
 
         // Checks for the torrent list popup and starts to download the torrent that best meets selection criteria.
         let catchTorrentList = function() {
@@ -369,10 +397,18 @@ let addDownloadShortcuts = function() {
                 let torrents = Array.from(document.getElementsByTagName('table'), function(table) {
                     let torrent = table.getElementsByTagName('a')[0];
                     if (torrent !== undefined) {
+                        // Convert GB and KB to MB.
+                        let sizeAndUnit = table.textContent.match(/Size:\s*([0-9.]+)\s*(KB|MB|GB)/);
+                        let size = +sizeAndUnit[1];
+                        if (sizeAndUnit[2] === 'KB') {
+                            size /= 1024;
+                        } else if (sizeAndUnit[2] === 'GB') {
+                            size *= 1024;
+                        }
                         return {
                             torrent: torrent.href,
                             timestamp: Date.parse(table.textContent.match(/Posted:\s*([0-9-]+\s*[0-9:]+)/)[1]),
-                            size: +table.textContent.match(/Size:\s*([0-9.]+)\s*(?:MB|GB)/)[1],
+                            size: size,
                             seeds: +table.textContent.match(/Seeds:\s*(\d+)/)[1],
                             peers: +table.textContent.match(/Peers:\s*(\d+)/)[1]
                         };
@@ -607,7 +643,7 @@ let openGalleriesSeparately = function() {
     });
 }
 
-if (window.location.href.includes('downloadshortcuts=')) {
+if (window.location.href.includes('mayriadehdownloadshortcuts=')) {
     // This onbeforeunload is mainly used to ensure the locating server popup will be caught before the redirect.
     window.onbeforeunload = addDownloadShortcuts;
     if (document.readyState === 'loading') {
