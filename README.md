@@ -27,9 +27,9 @@ This script may be the fastest option for mass downloads, but you will need GP o
 
 You need to [enable mixed contents](#mixed-content) to download archives. Read [the troubleshooting section](#troubleshooting) if you have problems, or make a post in [the official release thread](https://forums.e-hentai.org/index.php?showtopic=229481).
 
-This is an premature extract from my private master script and I am not a programmer, so it is not widely tested yet and there may be limited support. I was not even planning to release this.
+This is an premature extract from my private master script and I am not a programmer, so it is not widely tested and there may be limited support. I was not even planning to release this.
 
-You should be able to update this script directly from your userscript loader e.g., Tampermonkey, and you should do so to keep this script up to date.
+You should be able to update this script directly from your userscript loader and you should do so to keep this script up to date. However, I know at least Tampermonkey can fail to detect updates.
 
 There are settings in the code and their names are obvious enough to you to use and change, but they will be reset after an update, so you will need to edit them again if they have been previously edited.
 
@@ -101,7 +101,9 @@ Clicking a singular download button will start an invisible, automated process t
 
 **"Loading"**
 
-When the download process is running, the button will return yellow and say "loading", because it literally loading the relevant windows in the download process. The download process will automatically retry in certain conditions, so you may see a button staying in this loading state for a while. If you have not enabled mixed content, the button will stay in this state forever when it is trying to download the archive before you refresh or change the page, so make sure you [enable that](#mixed-content).
+When the download process is running, the button will turn yellow and say "loading", because it literally loading the relevant windows in the download process. You can click the button while it is loading in this state to cancel the download attempt and reset the button to the idle state, where it says "download".
+
+The download process will automatically retry in certain conditions, so you may see a button staying in this loading state for a while. If you have not enabled mixed content, the button will stay in this state forever when it is trying to download the archive before you refresh or change the page, so make sure you [enable that](#mixed-content).
 
 **"Done"**
 
@@ -208,17 +210,17 @@ If your singular download buttons are stuck in the "loading" state when you are 
 
 - In Chrome, you see a shield icon next to the bookmark star at the right end of the omnibox.
 
-- Your browser says something about blocking mixed content. For example, Chrome would say:
+- Your browser gives a warning in the console about blocking mixed content. For example, Chrome would say:
 
 	```
 	Mixed Content: The page at '*' was loaded over HTTPS, but requested an insecure resource '*'. This request has been blocked; the content must be served over HTTPS.
 	```
 
-The earlier precautions section provides a quick solution for Chrome. I will try to update that section to include solutions for other browsers, but it would be great if you can solve it yourself and let me know how you did it, so that I can quickly a solution here to help others.
+The earlier precautions section provides [some solutions](#mixed-content) for Chrome and Firefox. I might update that section to include more solutions, but it would be great if you can solve it yourself and let me know how you did it, so that I can quickly add a solution to help others.
 
-The second possible explanation is that you are just having a hard time trying to connect to the archivers, because a lot of people are still downloading. If you cannot manually download the archive by going to the gallery page, then this is the reason.
+The second possible explanation is that you are just having a hard time trying to connect to the archivers. This is much less likely now since the crisis is over. If you also cannot manually download the archive by going to the gallery page, then this is the reason.
 
-The third possible reason is blockage by other scripts, extensions, or software. You can disable everything besides this script and the loader extension, perhaps by using incognito mode, and see if this script works.
+The third possible reason is blockage by other scripts, extensions, or software. You can disable everything besides this script and the loader extension, perhaps by using incognito or private mode, and see if this script works.
 
 ### No actual download after reaching "done" state
 
@@ -228,7 +230,7 @@ Actual download might fail if your internet connection is unstable, which is bey
 
 ## Issues
 
-I am wondering whether there can be missed or duplicate downloads when you use this userscript, especially when you download a lot of galleries at roughly the same time. I have been using it for a long time and I have not had this problem, so I am no idea if it will actually happen. This does not include failed downloads due to bad connection or other external factors.
+I am wondering whether there can be missed or duplicate downloads when you use this userscript, especially when you download a lot of galleries at roughly the same time. I have been using it for a long time and I have not had this problem or it is just extremely rare, so I am no idea if it will actually happen. This does not include failed downloads due to bad connection or other external factors.
 
 Then, there are two things I need help with: if you can tell me how you enabled mixed content in your browser, that would help a lot. Also, the code cannot handle the error the site throws when you have insufficient funds for an archive download, because I will not be able to see it. Therefore, please let me know how the popup looks and what it says.
 
