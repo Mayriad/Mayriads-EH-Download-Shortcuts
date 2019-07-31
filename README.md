@@ -4,6 +4,14 @@
 
 A userscript for e-hentai galleries that automates the standard download process and lets you download galleries en masse directly from gallery lists via the three official methods, which include the doggie bag archiver, H@H downloader, and ehtracker torrents.
 
+---
+
+It looks like I will have to stress the following over and over again:
+
+- I am not a programmer, and I may not respond to feature requests.
+- In addition, this is a private script that I was not planning to release and is hence not widely tested yet. There will be bug fixes and you need to update ASAP if you are still using older versions.
+- I do not have access to the H@H downloader, so I wrote that feature blindly and also could not test it myself. I just found out that the H@H downloader option does not stay free for a week after it is unlocked like the doggie bag archiver, and using the earliest version, v1.5.1, can waste you a lot of GP, so please make ensure you keep it up to date and be careful with this option.
+
 ## Table of contents
 
 - [TL;DR](#tl;dr)
@@ -147,7 +155,7 @@ There is not much to say about this, except you need GP or credits for it, and y
 
 This is a new feature, because previously I did not have access to it and hence could not add it. This is not enabled by default and you will need to edit [a setting](#`archive_type_to_download`) to use it by selecting the H@H resample size or the H@H original version to download. When the target H@H resample size is not available for a gallery, the script will automatically download the original version instead. This can happen very often at least when you are downloading newly uploaded galleries before their resamples become available. For this reason, I decided to let the script switch to original without giving a notification, because otherwise the notifications may frequently pause the download process.
 
-This is feature is new, because I do not have access to the H@H downloader and could only add it now with [external help](#credits). I wrote this feature blindly and cannot test it myself, so let me know if you have problems with it.
+This is feature is new, because I do not have access to the H@H downloader and could only add it now with [external help](#credits). I wrote this feature blindly and cannot test it myself, so let me know if you have problems with it. I just found out that the H@H downloader option does not stay free for a week after it is unlocked like the doggie bag archiver, so bugs and problems with this option would actually hurt your GP wallet. Please keep the script up-to-date and be careful with this option.
 
 [⇧ Back to table of contents](#table-of-contents)
 
