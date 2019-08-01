@@ -84,7 +84,7 @@ let addDownloadShortcuts = function() {
                 .downloadButton.failed, .downloadButton.unavailable { background-color: rgba(255, 0, 0, 1);
                     cursor: pointer; border: 1px solid rgba(215, 0, 0, 1); }
                 .downloadButton.idle:hover { box-shadow: 0px 1px 7px 2px rgba(34, 167, 240, 0.6); }
-                .hiddenIframe { position: absolute; bottom: -100vh; visibility: hidden; }`;
+                .hiddenIframe { position: absolute; top: -100vh; visibility: hidden; }`;
 
             // Set the button size each display mode.
             switch (displayMode) {
