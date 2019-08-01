@@ -6,11 +6,14 @@ A userscript for e-hentai galleries that automates the standard download process
 
 ---
 
+**Please stop using the H@H downloader feature until v1.5.5 is released.**
+
 It looks like I will have to stress the following over and over again:
 
 - I am not a programmer, and I may not respond to feature requests.
 - In addition, this is a private script that I was not planning to release and is hence not widely tested yet. There will be bug fixes and you need to update ASAP if you are still using older versions.
-- I do not have access to the H@H downloader, so I wrote that feature blindly and also could not test it myself. I just found out that the H@H downloader option does not stay free for a week after it is unlocked like the doggie bag archiver, and using the earliest version, v1.5.1, can waste you a lot of GP, so please make ensure you keep it up to date and be careful with this option.
+
+---
 
 ## Table of contents
 
