@@ -6,12 +6,11 @@ A userscript for e-hentai galleries that automates the standard download process
 
 ---
 
-**Please stop using the H@H downloader feature until v1.5.5 is released.**
-
 It looks like I will have to stress the following over and over again:
 
-- I am not a programmer, and I may not respond to feature requests.
-- In addition, this is a private script that I was not planning to release and is hence not widely tested yet. There will be bug fixes and you need to update ASAP if you are still using older versions.
+I am not a programmer, and I may not respond to feature requests. In addition, this is a private script that I was not planning to release and is hence not widely tested yet. There will be bug fixes and you need to update ASAP if you are still using older versions.
+
+I do not have access to the H@H downloader, so I wrote that feature blindly and also could not test it myself. So far it has had significant problems due to insufficient third-party information and testing, so you need to be very careful when you set the script to use this downloader; in particular, you should watch your GP wallet and stop any singular download that gets stuck in the "loading" state for more than a minute, if this still happens. I am afraid I cannot be responsible for this feature at the moment.
 
 ---
 
@@ -156,9 +155,13 @@ There is not much to say about this, except you need GP or credits for it, and y
 
 ### H@H download
 
-This is a new feature, because previously I did not have access to it and hence could not add it. This is not enabled by default and you will need to edit [a setting](#`archive_type_to_download`) to use it by selecting the H@H resample size or the H@H original version to download. When the target H@H resample size is not available for a gallery, the script will automatically download the original version instead. This can happen very often at least when you are downloading newly uploaded galleries before their resamples become available. For this reason, I decided to let the script switch to original without giving a notification, because otherwise the notifications may frequently pause the download process.
+This is feature is new, because I do not have access to the H@H downloader and could only add it now with [external help](#credits) after receiving two feature requests. Since I wrote this feature blindly and also cannot test it myself, it has had significant problems due to insufficient third-party information and testing. Furthermore, I recently found out that the H@H downloader option does not stay free for a week after it is unlocked like the doggie bag archiver, so bugs and problems with this option would actually hurt your GP wallet.
 
-This is feature is new, because I do not have access to the H@H downloader and could only add it now with [external help](#credits). I wrote this feature blindly and cannot test it myself, so let me know if you have problems with it. I just found out that the H@H downloader option does not stay free for a week after it is unlocked like the doggie bag archiver, so bugs and problems with this option would actually hurt your GP wallet. Please keep the script up-to-date and be careful with this option.
+Therefore, you need to be very careful when you set the script to use this downloader; in particular, you should watch your GP wallet and stop any singular download that cannot finish within a minute. I am afraid I cannot be responsible for this feature at the moment. You should report any problem you have had with this downloader and I will try to somehow patch it up. This is also why it is important to keep this script up-to-date.
+
+This feature is not enabled by default, so if you do wish to use this downloader, you will need to edit [a setting](#`archive_type_to_download`) by selecting the target H@H download option. Moreover, the archiver setting in your EH home settings needs to be on "manual select", because other options would automatically select the original or resample doggie bag archive, hence not giving you the chance to use this downloader.
+
+When a target H@H resample size is not available for a gallery, the script will automatically download the original version instead. This can happen very often, so I decided to let the script switch to original without giving a notification, because otherwise the notifications may frequently pause the download process.
 
 [⇧ Back to table of contents](#table-of-contents)
 
@@ -184,10 +187,10 @@ This is the type of archive to be downloaded. Please note that this includes the
 
 This setting is only effective if the archiver setting in your EH home settings is on "manual select"; otherwise this setting in the code will be overridden by your "auto select original/resample" archiver setting in your EH home settings.
 
-The default value is `'Download Original Archive'` and there are a number of values you can use:
+The default value is `'Original Archive'` and there are a number of values you can use:
 
-- `'Download Original Archive'`
-- `'Download Resample Archive',`
+- `'Original Archive'`
+- `'Resample Archive'`
 - `'H@H 780x'`
 - `'H@H 980x'`
 - `'H@H 1280x'`
@@ -232,6 +235,8 @@ The earlier precautions section provides [some solutions](#mixed-content) for Ch
 The second possible explanation is that you are just having a hard time trying to connect to the archivers. This is much less likely now since the crisis is over. If you also cannot manually download the archive by going to the gallery page, then this is the reason.
 
 The third possible reason is blockage by other scripts, extensions, or software. You can disable everything besides this script and the loader extension, perhaps by using incognito or private mode, and see if this script works.
+
+If you have set this script to use the H@H downloader, then this persistent "loading" state is a serious problem that can unnecessarily deplete your funds. Therefore, if this problem somehow happens while you are trying H@H downloads, please click the singular download buttons to stop them.
 
 ### No actual download after reaching "done" state
 
