@@ -20,9 +20,9 @@
  *  Please note that the settings below will be reset after an update, so you will need to edit them again if they have
  *  been edited. This script will not need a lot of updates in the future, so hopefully the annoyance can be minimised.
  *
- *	I cannot test the H@H downloader feature and it has had significant problems, so you need to be very careful when
- *	you set the script to use this downloader; in particular, you should watch your GP wallet and stop any singular
- *	download that gets stuck in the "loading" state for more than a minute, if this still happens.
+ *  I cannot test the H@H downloader feature and it has had significant problems, so you need to be very careful when
+ *  you set the script to use this downloader; in particular, you should watch your GP wallet and stop any singular
+ *  download that gets stuck in the "loading" state for more than a minute, if this still happens.
  */
 
 // Settings that you can change after reading the user manual on GitHub ------------------------------------------------
@@ -270,21 +270,21 @@ let addDownloadShortcuts = function() {
             document.getElementById('dms').appendChild(batchDiv);
         }
 
-		// Activates applicable singular download buttons on a gallery list page to start multiple downloads at once.
-		let attemptBatchDownload = function(buttonEvent) {
-			let idleButtons = document.body.querySelectorAll('.downloadButton.idle, .downloadButton.unavailable');
-			if (idleButtons.length !== 0) {
-				for (let i = 0; i < Math.min(BATCH_DOWNLOAD_NUMBER, idleButtons.length); ++i) {
-					idleButtons[i].click();
-				}
-			} else {
-				// Do not declare page completion when there are ongoing tasks, since these may end up in the
-				// "unavailable" state.
-				if (document.body.querySelectorAll('.downloadButton.loading').length === 0) {
-					buttonEvent.target.value = 'No More Galleries';
-				}
-			}
-		}
+        // Activates applicable singular download buttons on a gallery list page to start multiple downloads at once.
+        let attemptBatchDownload = function(buttonEvent) {
+            let idleButtons = document.body.querySelectorAll('.downloadButton.idle, .downloadButton.unavailable');
+            if (idleButtons.length !== 0) {
+                for (let i = 0; i < Math.min(BATCH_DOWNLOAD_NUMBER, idleButtons.length); ++i) {
+                    idleButtons[i].click();
+                }
+            } else {
+                // Do not declare page completion when there are ongoing tasks, since these may end up in the
+                // "unavailable" state.
+                if (document.body.querySelectorAll('.downloadButton.loading').length === 0) {
+                    buttonEvent.target.value = 'No More Galleries';
+                }
+            }
+        }
 
         // Adds an event listener for messages from the cross-origin iframes.
         let addMessageListener = function() {
@@ -358,13 +358,13 @@ let addDownloadShortcuts = function() {
                     // Allow downloads that failed due to temporarily unavailable torrent or server to be retried.
                     downloadButton.className = downloadButton.className.replace('loading', 'unavailable');
                     downloadButton.textContent = 'Unavailable';
-					downloadButton.title = message.notification;
+                    downloadButton.title = message.notification;
                     break;
                 default:
                     // For other reasons, do not retry, declare a failure and give a notification instead.
                     downloadButton.className = downloadButton.className.replace('loading', 'failed');
                     downloadButton.textContent = 'Failed';
-					downloadButton.title = message.notification;
+                    downloadButton.title = message.notification;
                     if (!HIDE_ERROR_NOTIFICATIONS) {
                         alert(message.notification);
                     }
@@ -480,9 +480,9 @@ let addDownloadShortcuts = function() {
                 }
                 if (hathTypeLink !== null) {
                     window.onbeforeunload = null;
-					document.getElementById("hathdl_form").action = appendQueryString(
-						document.getElementById("hathdl_form").action, nonce);
-					hathTypeLink.click();
+                    document.getElementById("hathdl_form").action = appendQueryString(
+                        document.getElementById("hathdl_form").action, nonce);
+                    hathTypeLink.click();
                     return true;
                 }
             } else {
@@ -570,9 +570,9 @@ let addDownloadShortcuts = function() {
                     'unavailable at the moment. Please wait for a few hours and try again.');
                 return true;
             } else if (bodyText.includes('You must have a H@H client assigned to your account to use this feature')) {
-				postFailure('incorrect setting', 'The H@H download failed, because you have set this userscript to ' +
-					'use the H@H downloader, but you do not qualify. Please note that you will only be entitled to ' +
-					'use this downloader if you are running a H@H client.');
+                postFailure('incorrect setting', 'The H@H download failed, because you have set this userscript to ' +
+                    'use the H@H downloader, but you do not qualify. Please note that you will only be entitled to ' +
+                    'use this downloader if you are running a H@H client.');
                 return true;
             }
         };
