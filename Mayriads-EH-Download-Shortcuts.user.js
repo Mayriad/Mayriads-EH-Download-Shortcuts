@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name            Mayriad's EH Download Shortcuts
 // @namespace       https://github.com/Mayriad
-// @version         1.5.5
+// @version         1.5.6
 // @author          Mayriad
 // @description     Adds buttons to download galleries directly from the gallery list
 // @updateURL       https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
 // @downloadURL     https://github.com/Mayriad/Mayriads-EH-Download-Shortcuts/raw/master/Mayriads-EH-Download-Shortcuts.user.js
 // @include         https://e-hentai.org/*
+// @include         https://exhentai.org/*
 // @include         https://ehtracker.org/*
 // @include         htt*://*/*mayriadehdownloadshortcuts=*
 // @run-at          document-start
@@ -55,7 +56,7 @@ let addDownloadShortcuts = function() {
     let appendQueryString = function(url, nonce, timestamp) {
         return url + (url.includes('?') ? '&' : '?') + 'mayriadehdownloadshortcuts=' + nonce +
             (timestamp !== undefined ? '&timestamp=' + timestamp : '');
-    }
+    };
 
     // This half applies to gallery list pages as their url's will not contain the query string.
     if (!window.location.href.includes('mayriadehdownloadshortcuts=')) {
@@ -67,6 +68,8 @@ let addDownloadShortcuts = function() {
             displayMode = displayMode.textContent;
         }
 
+        let runningAttempts = {};
+
         // Adds CSS styles to support the download buttons.
         let addCustomStyles = function() {
             let downloadButtonStyles = document.createElement('style');
@@ -74,19 +77,29 @@ let addDownloadShortcuts = function() {
             downloadButtonStyles.id = 'downloadButtonStyles';
             downloadButtonStyles.textContent = `
                 .downloadButton { position: absolute; top: 0px; left: 0px; box-shadow: none; z-index: 1;
-                    transition: all 0.2s; margin: -1px; }
-                .downloadButton.idle { background-color: rgba(34, 167, 240, 1); cursor: pointer; opacity: 0;
-                    border: 1px solid rgba(0, 127, 200, 1); }
-                .downloadButton.loading { background-color: rgba(247, 202, 24, 1); cursor: pointer;
-                    border: 1px solid rgba(207, 162, 0, 1); }
-                .downloadButton.done { background-color: rgba(0, 0, 0, 1); cursor: default;
-                    border: 1px solid rgba(0, 0, 0, 1); }
+                    transition-duration: 0.3s; }
+                .downloadButton.idle { background-color: rgba(34, 167, 240, 1); cursor: pointer; opacity: 0; }
+                .downloadButton.loading { background-color: rgba(247, 202, 24, 1); cursor: pointer; }
+                .downloadButton.done { background-color: rgba(0, 0, 0, 1); cursor: default; }
                 .downloadButton.failed, .downloadButton.unavailable { background-color: rgba(255, 0, 0, 1);
-                    cursor: pointer; border: 1px solid rgba(215, 0, 0, 1); }
-                .downloadButton.idle:hover { box-shadow: 0px 1px 7px 2px rgba(34, 167, 240, 0.6); }
+                    cursor: pointer; }
+                .downloadButton.idle:hover { box-shadow: 0px 1px 7px 2px rgba(34, 167, 240, 0.6);
+                    transition-duration: 0.3s; }
+                .downloadButton.failed:hover, .downloadButton.unavailable:hover {
+                    box-shadow: 0px 1px 7px 2px rgba(255, 0, 0, 0.6); transition-duration: 0.3s; }
                 .hiddenIframe { position: absolute; top: -100vh; visibility: hidden; }`;
 
-            // Set the button size each display mode.
+            // Add borders to match the light style sheet when needed.
+            if (!document.querySelector('link[rel = stylesheet]').href.includes('x.css')) {
+                downloadButtonStyles.textContent += `
+                    .downloadButton { margin: -1px; }
+                    .downloadButton.idle { border: 1px solid rgba(0, 127, 200, 1); }
+                    .downloadButton.loading { border: 1px solid rgba(207, 162, 0, 1); }
+                    .downloadButton.done { border: 1px solid rgba(0, 0, 0, 1); }
+                    .downloadButton.failed, .downloadButton.unavailable { border: 1px solid rgba(215, 0, 0, 1); }`;
+            }
+
+            // Set the hover behaviour and button size for each display mode.
             switch (displayMode) {
                 case 'Minimal':
                 case 'Minimal+':
@@ -192,8 +205,6 @@ let addDownloadShortcuts = function() {
             };
         };
 
-        let runningAttempts = {};
-
         // Starts an automated download process when a download button is clicked.
         let attemptSingularDownload = function(buttonEvent) {
             let downloadButton = buttonEvent.target;
@@ -241,7 +252,7 @@ let addDownloadShortcuts = function() {
                     });
                 }
             }
-        }
+        };
 
         // Schedules a timeout that cancels a download attempt if it does not succeed in 15 seconds.
         let scheduleDownloadTimeout = function(nonce) {
@@ -268,7 +279,7 @@ let addDownloadShortcuts = function() {
             let batchDiv = document.createElement('div');
             batchDiv.appendChild(batchButton);
             document.getElementById('dms').appendChild(batchDiv);
-        }
+        };
 
         // Activates applicable singular download buttons on a gallery list page to start multiple downloads at once.
         let attemptBatchDownload = function(buttonEvent) {
@@ -284,7 +295,7 @@ let addDownloadShortcuts = function() {
                     buttonEvent.target.value = 'No More Galleries';
                 }
             }
-        }
+        };
 
         // Adds an event listener for messages from the cross-origin iframes.
         let addMessageListener = function() {
@@ -581,7 +592,7 @@ let addDownloadShortcuts = function() {
         let xpathSelector = function(xpath) {
             return document.evaluate(xpath, document.body, null, XPathResult.FIRST_ORDERED_NODE_TYPE,
                 null).singleNodeValue;
-        }
+        };
 
         // Posts a message to the gallery list hosting this iframe to signal a file download and pass the file address.
         let postDownload = function(url) {
@@ -651,7 +662,7 @@ let openGalleriesSeparately = function() {
             window.open(galleryLink.href);
         };
     });
-}
+};
 
 if (window.location.href.includes('mayriadehdownloadshortcuts=')) {
     // This onbeforeunload is mainly used to ensure the locating server popup will be caught before the redirect.
