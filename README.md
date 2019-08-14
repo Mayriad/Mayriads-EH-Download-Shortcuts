@@ -4,16 +4,6 @@
 
 A userscript for e-hentai galleries that automates the standard download process and lets you download galleries en masse directly from gallery lists via the three official methods, which include the doggie bag archiver, H@H downloader, and ehtracker torrents.
 
----
-
-It looks like I will have to stress the following over and over again:
-
-I am not a programmer, and I may not respond to feature requests. In addition, this is a private script that I was not planning to release and is hence not widely tested yet. There will be bug fixes and you need to update ASAP if you are still using older versions.
-
-I do not have access to the H@H downloader, so I wrote that feature blindly and also could not test it myself. So far it has had significant problems due to insufficient third-party information and testing, so you need to be very careful when you set the script to use this downloader; in particular, you should watch your GP wallet and stop any singular download that gets stuck in the "loading" state for more than a minute, if this still happens. I am afraid I cannot be responsible for this feature at the moment.
-
----
-
 ## Table of contents
 
 - [TL;DR](#tl;dr)
@@ -27,19 +17,17 @@ I do not have access to the H@H downloader, so I wrote that feature blindly and 
 
 ## TL;DR
 
-This readme or user manual has 3000+ words, so I think I should put this here:
+This readme or user manual has 4000+ words, so I think I should put this here:
 
 Please use machine translation if you need / 必要に応じて機械翻訳を使ってください / 如果需要，请使用机器翻译 / 필요한 경우 기계 번역을 사용하십시오.
 
-This script lets you download archives, torrents en masse directly from e-hentai gallery lists via official methods. It can also use the H@H downloader if you qualify.
+This script should be one of the fastest options for mass downloads, but you will need GP or credits to download archives since it is not an image crawler. On the bright side, it is much less likely that you will get banned using this script.
 
-This script may be the fastest option for mass downloads, but you will need GP or credits to download archives since it is not an image crawler.
+This script does not require you to enter your account details and the code is fully transparent, so you are not giving your details to anyone through this script.
 
 You need to [enable mixed contents](#mixed-content) to download archives. Read [the troubleshooting section](#troubleshooting) if you have problems, or make a post in [the official release thread](https://forums.e-hentai.org/index.php?showtopic=229481).
 
-This is an premature extract from my private master script and I am not a programmer, so it is not widely tested and there may be limited support. I was not even planning to release this.
-
-You should be able to update this script directly from your userscript loader and you should do so to keep this script up to date. However, I know at least Tampermonkey can fail to detect updates.
+This is an premature extract from an old version of my private master script and I am not a programmer, so it is not widely tested and there may be limited support. The master script will be released soon to replace it.
 
 There are settings in the code and their names are obvious enough to you to use and change, but they will be reset after an update, so you will need to edit them again if they have been previously edited.
 
@@ -147,7 +135,7 @@ Torrent download is enabled by default in [the settings](#`enable_torrent_downlo
 
 If there is no suitable torrent or just no torrent at all, the script will automatically resort to archive download and silently try again. If you have disabled the archive download, then galleries that do not have torrents will not get the singular download buttons in the first place, and the selection process mentioned above will not happen for galleries that do have torrents. In other words, when archive download is disabled, the script can only download galleries that have torrents and will definitely download a torrent for each of these galleries.
 
-Lastly, please note that the redistributable torrent will be served by the site since this userscript does not carry login information. Therefore your torrent download and upload statistics will not be recorded.
+Lastly, please note that the redistributable torrent will be served by the site since this userscript does not carry login information. Therefore your torrent download and upload statistics will not be recorded. The site can occasionally fail to serve the redistributable torrent, so you should also watch out for this.
 
 ### Gallery download
 
@@ -240,13 +228,13 @@ If you have set this script to use the H@H downloader, then this persistent "loa
 
 ### No actual download after reaching "done" state
 
-Actual download might fail if your internet connection is unstable, which is beyond what this script can control. If you think this is not the cause, let me know and I might have a look.
+Actual download might fail if your internet connection is unstable, which is beyond what this script can control. The site can also sometimes fail to serve the redistributable torrent.
 
 [⇧ Back to table of contents](#table-of-contents)
 
 ## Issues
 
-I am wondering whether there can be missed or duplicate downloads when you use this userscript, especially when you download a lot of galleries at roughly the same time. I have been using it for a long time and I have not had this problem or it is just extremely rare, so I am no idea if it will actually happen. This does not include failed downloads due to bad connection or other external factors.
+I am wondering whether there can be missed or duplicate downloads when you use this userscript, especially when you download a lot of galleries at roughly the same time. I have been using it for a long time and I have not had this problem or it is just extremely rare, so I am no idea if it will actually happen. This does not include failed downloads due to bad connection, failure on the site's part, and other external factors.
 
 Then, there are two things I need help with: if you can tell me how you enabled mixed content in your browser, that would help a lot. Also, the code cannot handle the error the site throws when you have insufficient funds for an archive download, because I will not be able to see it. Therefore, please let me know how the popup looks and what it says.
 
