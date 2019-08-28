@@ -23,11 +23,11 @@ Please use machine translation if you need / 必要に応じて機械翻訳を�
 
 This script should be one of the fastest options for mass downloads, but you will need GP or credits to download archives since it is not an image crawler. On the bright side, it is much less likely that you will get banned using this script.
 
-This script does not require you to enter your account details and the code is fully transparent, so you are not giving your details to anyone through this script.
+This script does not require you to enter your account details and the code is readable and fully transparent, so you are not giving anything to anyone through this script.
 
 You need to [enable mixed contents](#mixed-content) to download archives. Read [the troubleshooting section](#troubleshooting) if you have problems, or make a post in [the official release thread](https://forums.e-hentai.org/index.php?showtopic=229481).
 
-This is an premature extract from an old version of my private master script and I am not a programmer, so it is not widely tested and there may be limited support. The master script will be released soon to replace it.
+This is an premature extract from an old version of my private master script and I am not a programmer, so it is not widely tested and there may be limited support. The private master script will be released soon to replace it, so this repo will not be updated any further.
 
 There are settings in the code and their names are obvious enough to you to use and change, but they will be reset after an update, so you will need to edit them again if they have been previously edited.
 
@@ -55,6 +55,10 @@ There can be two ways to enable mixed content for each browser. The first way on
 
 When the script downloads an archive, you will see a shield icon next to the bookmark star at the right end of the omnibox. Click it and it will show a notification panel titled "insecure content blocked". It should have a link that says "load unsafe scripts", and you need to click this link. After you clicked it, the page will reload and then mixed content will be enabled.
 
+**Per-tab method for Vivaldi**
+
+Since Vivaldi is based on Chromium, it is very similar to the Chrome method above, but quicker. When the script downloads an archive, you will see a `⇆` icon that shows a pair of arrows next to the bookmark icon at the right end of the address field. Click it and the page will immediately reload and then mixed content will be enabled.
+
 **Per-tab method for Firefox**
 
 Firstly, you need to trigger the blocking of mixed content by using this script to download an archive. You need to click the `ⓘ` icon at at the left end of the address bar. This will open the site information panel, and if it says "Firefox has blocked parts of this page that are not secure", then it has been triggered, and you can click the arrow to the right of this message and click "disable protection for now". After you clicked it, the page will reload and then mixed content will be enabled for this tab.
@@ -65,13 +69,11 @@ You can go to your advanced settings by entering `about:config` in the address b
 
 **Methods for other browsers**
 
-I have not tested other browsers yet, but you can search online for solutions. The EH wiki article on technical problems also has relevant information, because images are served from H@H servers via HTTP. It is the "images are not loading" part [here](https://ehwiki.org/wiki/Technical_Issues#E-Hentai_Galleries). Please let me know if you have a working solution.
+I have not tested other browsers yet, but you can search online for solutions. The EH wiki article on technical problems also has relevant information, because images are served from H@H servers via HTTP. It is the "images are not loading" part [here](https://ehwiki.org/wiki/Technical_Issues#E-Hentai_Galleries). Please let me know if you have a working solution that has not been included in this section.
 
 ### Script compatibility
 
-At the moment, I think it should at least work fine with Tampermonkey and Violentmonkey on Chrome and Firefox. Of course, they all need to be fairly up to date. Greasemonkey will not be supported due to problems like load timing. I think Edge also cannot be supported because it does not have an option for mixed content.
-
-While it should work in modern browsers, how they treat HTTPS-HTTP mixed content makes a critical difference, and you need to follow the right steps to [enable it yourself](#mixed-content). It is generally very easy and it can be permanently enabled, although I cannot recommend this. Making this script immune to it will at least require me to rewrite a large proportion of this script, and I may not even be good enough to do it. Therefore, I cannot do rewrite it anytime soon and you will have to enable it or rewrite the code yourself.
+At the moment, I think it should at least work fine with Tampermonkey and Violentmonkey on Chromium-based browsers and Firefox. Of course, they all need to be fairly up to date. Greasemonkey will not be supported due to problems like load timing. How browsers treat HTTPS-HTTP mixed content makes a critical difference, and for this reason I think Edge also cannot be supported because it does not have an option for mixed content. You need to follow the right steps to [enable it yourself](#mixed-content), but it is generally very easy and it can be permanently enabled, although I cannot recommend this.
 
 Since this script only automates the official processes on the website, the actual downloads are still handled by your browser and any relevant extension you run. To ensure the best download experience, I will recommend you to let your browser or extension automatically download all files without promoting you to select a download location for each file.
 
